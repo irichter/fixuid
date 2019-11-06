@@ -23,6 +23,7 @@ const ranFile = "/var/run/fixuid.ran"
 
 var logger = log.New(os.Stderr, "", 0)
 var quietFlag = flag.Bool("q", false, "quiet mode")
+var suFlag = flag.Bool("su", false, "su mode (run args with root permissions)")
 
 func main() {
 	runtime.GOMAXPROCS(1)
@@ -289,13 +290,25 @@ func exitOrExec(runtimeUIDInt int, runtimeGIDInt int, argsWithoutProg []string) 
 			logger.Fatalln(err)
 		}
 
-		// de-escalate the user back to the original
-		if err := syscall.Setreuid(runtimeUIDInt, runtimeUIDInt); err != nil {
-			logger.Fatalln(err)
-		}
-		// de-escalate the group back to the original
-		if err := syscall.Setregid(runtimeGIDInt, runtimeGIDInt); err != nil {
-			logger.Fatalln(err)
+		if *suFlag {
+			var euid = os.Geteuid()
+			var egid = os.Getegid()
+			logInfo("Running in SU mode -- args will execute as " + strconv.Itoa(euid) + ":" + strconv.Itoa(egid))
+			if err := syscall.Setreuid(euid, euid); err != nil {
+				logger.Fatalln(err)
+			}
+			if err := syscall.Setregid(egid, egid); err != nil {
+				logger.Fatalln(err)
+			}
+		} else {
+			// de-escalate the user back to the original
+			if err := syscall.Setreuid(runtimeUIDInt, runtimeUIDInt); err != nil {
+				logger.Fatalln(err)
+			}
+			// de-escalate the group back to the original
+			if err := syscall.Setregid(runtimeGIDInt, runtimeGIDInt); err != nil {
+				logger.Fatalln(err)
+			}
 		}
 
 		// exec new process
