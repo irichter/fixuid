@@ -1,6 +1,6 @@
 # fixuid
 
-[![Build Status](https://travis-ci.org/boxboat/fixuid.svg?branch=master)](https://travis-ci.org/boxboat/fixuid)
+![Build Status](https://github.com/boxboat/fixuid/workflows/Main/badge.svg)
 
 `fixuid` is a Go binary that changes a Docker container's user/group and file permissions that were set at build time to the UID/GID that the container was started with at runtime.  Primary use case is in development Docker containers when working with host mounted volumes.
 
@@ -61,7 +61,7 @@ RUN groupadd -g 1000 docker && \
 ```
 RUN USER=docker && \
     GROUP=docker && \
-    curl -SsL https://github.com/boxboat/fixuid/releases/download/v0.4/fixuid-0.4-linux-amd64.tar.gz | tar -C /usr/local/bin -xzf - && \
+    curl -SsL https://github.com/boxboat/fixuid/releases/download/v0.5/fixuid-0.5-linux-amd64.tar.gz | tar -C /usr/local/bin -xzf - && \
     chown root:root /usr/local/bin/fixuid && \
     chmod 4755 /usr/local/bin/fixuid && \
     mkdir -p /etc/fixuid && \

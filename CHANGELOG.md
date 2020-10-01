@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5](https://github.com/boxboat/fixuid/releases/tag/v0.5) - 2020-06-12
+
+### Fixes
+
+- Use Lchown so that symbolic links are not followed: [#27](https://github.com/boxboat/fixuid/pull/27)
+
+## [0.4.1](https://github.com/boxboat/fixuid/releases/tag/v0.4.1) - 2020-04-28
+
+### Features
+
+- Add linux arm64 release: [#23](https://github.com/boxboat/fixuid/pull/23)
+
 ## [0.4](https://github.com/boxboat/fixuid/releases/tag/v0.4) - 2018-05-24
 
 ### Features
